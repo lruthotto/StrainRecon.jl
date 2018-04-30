@@ -43,7 +43,7 @@ include("intmat2binmat.jl")
 hasGurobi=false
 try
 	using Gurobi
-	using MUMPS
+	using JuMP
 	hasGurobi = true
 catch
 end
