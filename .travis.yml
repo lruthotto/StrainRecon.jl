@@ -1,0 +1,21 @@
+language: julia
+
+os:
+  - osx
+  - linux
+
+julia:
+  - 0.6
+
+notifications:
+  email: false
+
+before_install:
+   - julia -e 'Pkg.clone("https://github.com/JuliaInv/jInv.jl","jInv"); Pkg.build("jInv");'
+   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+
+script:
+    - julia -p 4 --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("StrainRecon");  Pkg.test("StrainRecon";coverage=true)'
+
+after_success:
+    - julia -e 'cd(Pkg.dir("StrainRecon")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
