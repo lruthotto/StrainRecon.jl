@@ -1,4 +1,7 @@
 # StrainRecon.jl
+
+[![Build Status](https://travis-ci.org/lruthotto/StrainRecon.jl.svg?branch=master)](https://travis-ci.org/lruthotto/StrainRecon.jl)
+
 Julia code for strain reconstruction from mixed samples. 
 The problem is formulating as a Bayesian inverse problem involving binary constraints. 
 The code contains methods for building the posterior and exploring it by MAP estimation and some uncertainty quantification.  
