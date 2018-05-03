@@ -95,8 +95,8 @@ function bcd(param,w;wtol::Float64=1e-3, maxIter::Int=10, maxIterQP::Int=5, stor
 
 
 	if storeInterm == 1
-		return ws[:,1:iter+1],Ms[:,:,1:iter], his[1:iter,:]
+		return Ms[:,:,1:iter],ws[:,1:iter+1], his[1:iter,:]
 	else
-		return w,M, his[1:iter,:]
+		return M,w, his[1:iter,:]
 	end
 end

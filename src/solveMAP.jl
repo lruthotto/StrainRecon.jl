@@ -18,16 +18,16 @@ Keyword arguments:
 	4. wtolBCD     - tolerance for breaking out of BCD iteration when |w_prev - w_current| < wtolBCD
 	5. maxIterBCD  - maximum number of iterations per BCD trial
 	6. maxIterQP   - maximum number of iterations for findw (used in asqp)
-	7. pwr           - exponent of the likelihood l_p norm
+	7. pwr         - exponent of the likelihood l_p norm
 
 Output:
 
-	1. wmap - optimal w (storeInterm = 0)
-              all w and intermediate history from all BCD trials, sorted by misfit (1)
-              all w but no intermediate history from all BCD trials, sorted by misfit (2)
-	2. Mmap - optimal M (storeInterm = 0)
+    1. Mmap - optimal M (storeInterm = 0)
               all M and intermediate history from all BCD trials, sorted by misfit (1)
               all M but no intermediate history from all BCD trials, sorted by misfit (2)
+	2. wmap - optimal w (storeInterm = 0)
+              all w and intermediate history from all BCD trials, sorted by misfit (1)
+              all w but no intermediate history from all BCD trials, sorted by misfit (2)
 	3. his  - history of misfit, |M_old-M_current|, |w_old-w_current| for optimal(M,w) with lowest misfit (0)
               history of misfit, |M_old-M_current|, |w_old-w_current| for all (M,w) and intermediate history of each BCD iterations from all BCD trials sorted by misfit (1)
               history of misfit, |M_old-M_current|, |w_old-w_current| for all (M,w) and no intermediate history from all BCD trials sorted by misfit (2)
@@ -72,9 +72,9 @@ function solveMAP(param::StrainReconParam;maxTry::Int64=10,storeInterm = 0,wtolB
  	 				end
                     # n = 1 case, a0 is always [1]
                     if n == 1
-                        w,m,hisf= remotecall_fetch(bcd,pworkers,param,[w0[idx]];wtol=wtolBCD,maxIter=maxIterBCD,maxIterQP=maxIterQP,storeInterm=storeInterm,out=-1,pwr=pwr)
+                        m,w,hisf= remotecall_fetch(bcd,pworkers,param,[w0[idx]];wtol=wtolBCD,maxIter=maxIterBCD,maxIterQP=maxIterQP,storeInterm=storeInterm,out=-1,pwr=pwr)
                     else
-                        w,m,hisf= remotecall_fetch(bcd,pworkers,param,w0[:,idx];wtol=wtolBCD,maxIter=maxIterBCD,maxIterQP=maxIterQP,storeInterm=storeInterm,out=-1,pwr=pwr)
+                        m,w,hisf= remotecall_fetch(bcd,pworkers,param,w0[:,idx];wtol=wtolBCD,maxIter=maxIterBCD,maxIterQP=maxIterQP,storeInterm=storeInterm,out=-1,pwr=pwr)
                     end
                     updateRes(w,m,hisf,idx)
                 end
@@ -98,19 +98,19 @@ function solveMAP(param::StrainReconParam;maxTry::Int64=10,storeInterm = 0,wtolB
 		wmap = wsqp[:,:,id] # n-by-history of each BCD iteration-by-total BCD iterations
 		Mmap = Msqp[:,:,:,id] # m-by-n-by-history of each BCD iteration-by-total BCD iterations, needs to be converted to bit array for input to misfit
 		his = his[:,:,id] # maxIter-by-3-by-maxTry
-		return wmap,Mmap,his # return all (M,w) and intermediate (M,w) during BCD iterations and history for each BCD trial
+		return Mmap,wmap,his # return all (M,w) and intermediate (M,w) during BCD iterations and history for each BCD trial
 	elseif storeInterm == 0
 		ksqp = indmin(Jsqp)
 		wmap = wsqp[:,ksqp]
 		Mmap = Msqp[:,:,ksqp] # needs to be converted to bit array for input to misfit
 		his = his[:,:,ksqp]
-		return wmap,Mmap,his # return (M,w) with lowest misfit and history for each BCD trial
+		return Mmap,wmap,his # return (M,w) with lowest misfit and history for each BCD trial
 	else
 		ksqp = sortperm(Jsqp)
 		wmap = wsqp[:,ksqp]
 		Mmap = Msqp[:,:,ksqp] # needs to be converted to bit array for input to misfit
 		his = his[:,:,ksqp]
-		return wmap,Mmap,his # return all (M,w) and history for each BCD trial
+		return Mmap,wmap,his # return all (M,w) and history for each BCD trial
 	end
 
 end

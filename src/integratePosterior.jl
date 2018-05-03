@@ -128,11 +128,11 @@ end
 
 
     Output:
-        1. wmean  - E(w)
-        2. Mmean  - E(M)
+        1. Mmean  - E(M)
+        2. wmean  - E(w)
         3. misfit - E(misfit)
-		4. wvar   - Var(w), i.e., E((w-E(w)).^2)
-		5. Mvar   - Var(M), i.e., E((M-E(M)).^2)
+		4. Mvar   - Var(M), i.e., E((M-E(M)).^2)
+		5. wvar   - Var(w), i.e., E((w-E(w)).^2)
 """
 
 function wrapperIntegratePosterior(param;K::Int64=10000,wquad=randomw(param.n,K))
@@ -178,7 +178,7 @@ function wrapperIntegratePosterior(param;K::Int64=10000,wquad=randomw(param.n,K)
 	end
     misfit = integratePosteriorParallel(param,prowfuns,K=K,wquad=wquad)
 
-    return wmean, Mmean, misfit, wvar, Mvar
+    return Mmean, wmean, misfit, Mvar, wvar
 end
 
 """

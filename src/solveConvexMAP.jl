@@ -17,8 +17,8 @@ Keyword arguments:
 
 Output:
 
-	1. w      - estimated frequency vector
-	2. M      - estimated binary matrix
+	1. M      - estimated binary matrix
+	2. w      - estimated frequency vector
     3. status - return code of the Gurobi solver
 """
 
@@ -73,6 +73,6 @@ function solveConvexMAP(param::StrainReconParam;pwr::Float64=param.pwr,out::Int=
 
     status = solve(model)
 
-    return getvalue(w), BitArray(getvalue(M)), status
+    return BitArray(getvalue(M)), getvalue(w), status
 
 end

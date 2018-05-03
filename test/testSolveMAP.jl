@@ -9,11 +9,11 @@ Data  = M*atrue
 
 param = getStrainReconParam(Data,n,R=R)
 
-amap,Mmap = solveMAP(param,maxTry=100,maxIterQP=10)
+Mmap,amap = solveMAP(param,maxTry=100,maxIterQP=10)
 @test norm(amap - atrue)/norm(atrue) < 1e-8
 @test norm(Mmap*amap-Data) < 1e-7
 
-Asqp,Msqp = solveMAP(param,storeInterm=true,maxIterQP=20)
+Msqp,Asqp = solveMAP(param,storeInterm=true,maxIterQP=20)
 # Asqp is n-by-history of each BCD iteration-by-MaxTry
 # Msqp is m-by-n-by-history of each BCD iteration-by-MaxTry
 

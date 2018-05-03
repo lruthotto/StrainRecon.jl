@@ -21,7 +21,7 @@ for param=[paramGauss,paramLaplace]
         mbcd = falses(m,n)
         for k=1:maxTry
             a0 = randomw(n)
-            abcd,mbcd,his = bcd(param, a0,out=-1)
+            mbcd,abcd,his = bcd(param, a0,out=-1)
             Abcd[:,k] = abcd
         	Mbcd[:,:,k] = mbcd
             A0[:,k] = a0
