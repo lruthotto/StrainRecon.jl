@@ -5,6 +5,7 @@ using Base.Test
 	println("=== testing StrainRecon.jl code ===")
 	println("")
 	include("testFindw.jl")
+	include("testFindM.jl")
 	include("testSolveMAP.jl")
 	include("testSolveConvexMAP.jl")
 	include("testReducedMisfit.jl")
