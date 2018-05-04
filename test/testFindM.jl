@@ -7,9 +7,10 @@ using Base.Test
     nsamp = 5
     w = randomw(n,nsamp)
     Mtrue = randomM(m,n)
+    R = 1/(1e-8)*StrainRecon.sdiag(ones(m))
     for i = 1:nsamp
         d = Mtrue*w[:,i]
-        param = getStrainReconParam(d,n)
+        param = getStrainReconParam(d,n,R=R)
         M_nsol,pm = findM(param, w[:,i], nsol = 2^n, probM = true)
         for j = 1:2^n
             M = M_nsol[:,:,j]*1
